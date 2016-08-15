@@ -36,6 +36,17 @@ REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME
 ASSETS_SLUG = 'mental-health'
 
 """
+MEDIA
+"""
+NUM_SLIDES_AFTER_CONTENT = 0
+
+# Configuration
+AUDIO = False
+VIDEO = False
+FILMSTRIP = False
+PROGRESS_BAR = True
+
+"""
 DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = 'apps.npr.org'

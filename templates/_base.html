@@ -17,6 +17,23 @@
 
     <!-- CSS -->
     {{ CSS.push('less/app.less') }}
+
+    {% if AUDIO %}
+    {{ CSS.push('less/audio.less') }}
+    {% endif %}
+
+    {% if VIDEO %}
+    {{ CSS.push('less/video.less') }}
+    {% endif %}
+
+    {% if FILMSTRIP %}
+    {{ CSS.push('less/filmstrip.less') }}
+    {% endif %}
+
+    {% if PROGRESS_BAR %}
+    {{ CSS.push('less/progress-bar.less') }}
+    {% endif %}
+
     {% block extra_css %}{% endblock extra_css %}
     {{ CSS.render('css/rendered/app.min.css') }}
 
@@ -25,7 +42,7 @@
     {% block extra_head %}
     {% endblock extra_head %}
 </head>
-<body>
+<body class="deck-container">
     <!-- ANALYTICS JAVASCRIPT -->
     {{ JS.push('js/lib/modernizr.js') }}
     {{ JS.push('js/lib/cookie.js') }}
@@ -37,68 +54,41 @@
 
     <a class="sr-only" href="#content">Skip To Content</a>
 
-    {% block nav %}
-    <nav role="navigation">
-        <ul class="site-links">
-            <li class="npr"><a href="http://npr.org"><img src="http://media.npr.org/chrome/news/nprlogo_138x46.gif" alt="NPR" /></a></li>
-            <li class="news"><a href="http://www.npr.org/sections/news/">News</a></li>
-            <li class="arts"><a href="http://www.npr.org/sections/arts/">Arts &amp; Life</a></li>
-            <li class="music"><a href="http://www.npr.org/music/">Music</a></li>
-            <li class="listen"><a href="http://www.npr.org/listen/">Listen</a></li>
-        </ul>
-        <ul class="site-links-2">
-            <li class="stations"><a href="http://www.npr.org/templates/stations/stations/">Stations</a></li>
-            <li class="donate"><a href="http://www.npr.org/stations/donate/index.php">Donate</a></li>
-            <li class="shop"><a href="http://shop.npr.org">Shop</a></li>
-        </ul>
-    </nav>
-    {% endblock nav %}
+    {% block outer_content %}
 
     {% block header_content %}
     {% endblock header_content %}
 
     {% block content %}
     {% endblock content %}
+    {% block wide_content %}
+    {% endblock wide_content %}
 
-    {% block footer %}
-    <footer>
-        <div class="primary">
-            <ul>
-                <li><a href="http://www.npr.org" data-action="Click Logo"><img src="http://media.npr.org/chrome/news/nprlogo_138x46.gif" alt="NPR Logo"></a></li>
-                <li class="news"><a href="http://www.npr.org/sections/news/">News</a></li>
-                <li class="artslife"><a href="http://www.npr.org/sections/arts/">Arts &amp; Life</a></li>
-                <li class="music"><a href="http://www.npr.org/music/">Music</a></li>
-                <li class="programs"><a href="http://www.npr.org/programs/">Programs</a></li>
-                <li class="listen"><a href="http://www.npr.org/listen/">Listen</a></li>
-                <li class="about"><a href="http://www.npr.org/about/">About</a></li>
-            </ul>
-        </div>
-        <div class="secondary">
-            <p>&copy;2016 NPR</p>
-            <ul>
-                <li id="footerContact"><a href="http://help.npr.org/npr/includes/customer/npr/custforms/contactus.aspx">Contact</a></li>
-                <li><a href="http://www.npr.org/about/termsofuse.html">Terms of Use</a></li>
-                <li><a href="http://www.npr.org/about/privacypolicy.html">Privacy</a></li>
-                <li><a href="http://thin.npr.org/">Text-Only</a></li>
-            </ul>
-        </div>
-    </footer>
-    {% endblock footer %}
+    {% endblock outer_content %}
 
     {{ JS.push('js/lib/jquery.js') }}
-    {{ JS.push('js/lib/underscore.js') }}
-    {{ JS.push('js/lib/moment.js') }}
+    {{ JS.push('js/lib/imgLiquid.js') }}
+    {{ JS.push('js/lib/deck.core.js') }}
 
-    {# uncomment both files to use simpleStorage #}
-    {# {{ JS.push('js/lib/simpleStorage.js') }} #}
-    {# {{ JS.push('js/storage.js') }} #}
+    {% if AUDIO %}
+    {{ JS.push('js/lib/jquery.jplayer.min.js') }}
+    {{ JS.push('js/audio.js') }}
+    {% endif %}
 
-    {% if RELOAD_TRIGGER %}
-    {{ JS.push('js/reload.js') }}
+    {% if FILMSTRIP %}
+    {{ JS.push('js/lib/imagesloaded.pkgd.js') }}
+    {{ JS.push('js/filmstrip.js') }}
+    {% endif %}
+
+    {% if VIDEO %}
+    {{ JS.push('js/video.js') }}
+    {% endif %}
+
+    {% if PROGRESS_BAR %}
+    {{ JS.push('js/progress-bar.js') }}
     {% endif %}
 
     {{ JS.push('js/copy.js') }}
-    {{ JS.push('js/templates.js') }}
     {{ JS.push('js/app.js') }}
     {% block extra_foot_js %}{% endblock extra_foot_js %}
     {{ JS.render('js/app-footer.min.js') }}
