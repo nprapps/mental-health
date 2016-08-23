@@ -1,0 +1,103 @@
+.slide.roles {
+    text-align: center;
+
+    .full-block .full-block-cell {
+        vertical-align: top;
+        padding-top: 44px;
+    }
+
+    .cameos {
+        position: relative;
+        margin-bottom: 22px;
+        height: 350px;
+
+        @media @screen-large { height: 425px; }
+        @media @screen-small { height: 250px; }
+        @media @screen-tiny { height: 180px; }
+    }
+
+    .role {
+        overflow: hidden;
+        border-radius: 200px;
+        background-color: #fff;
+        position: absolute;
+        opacity: 0.5;
+        border: 2px solid transparent;
+        width: 120px;
+        height: 120px;
+
+        @media @screen-large {
+            width: 150px;
+            height: 150px;
+        }
+        @media @screen-small {
+            width: 90px;
+            height: 90px;
+        }
+        @media @screen-tiny {
+            width: 65px;
+            height: 65px;
+        }
+
+        &.nurse {
+            left: 5%;
+            bottom: 20%;
+        }
+        &.teacher {
+            left: 20%;
+            top: 0;
+        }
+        &.counselor {
+            right: 20%;
+            top: 0;
+        }
+        &.psych {
+            right: 5%;
+            bottom: 20%;
+        }
+        &.student {
+            bottom: 0;
+            left: 50%;
+            opacity: 1;
+            margin-left: -100px;
+            width: 200px;
+            height: 200px;
+
+            @media @screen-large {
+                margin-left: -125px;
+                width: 250px;
+                height: 250px;
+            }
+            @media @screen-small {
+                margin-left: -75px;
+                width: 150px;
+                height: 150px;
+            }
+            @media @screen-tiny {
+                margin-left: -50px;
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 450px;
+    }
+}
+
+#slide-counselors .role.counselor,
+#slide-counselors .role.student,
+#slide-nurses .role.nurse,
+#slide-nurses .role.student,
+#slide-psychologists .role.psych,
+#slide-psychologists .role.student,
+#slide-teachers .role.teacher,
+#slide-teachers .role.student {
+    background-color: orange;
+    opacity: 1;
+    border-color: #999;
+}
