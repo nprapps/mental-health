@@ -121,11 +121,19 @@ var loadImages = function($slide) {
     }
 
     if (bgimg.attr('src')) {
-        $container.imgLiquid({
-            fill: true,
-            horizontalAlign: "center",
-            verticalAlign: "center",
-        });
+        if (_.contains([ 'slide-start', 'slide-next' ], $slide[0]['id'])) {
+            $container.imgLiquid({
+                fill: true,
+                horizontalAlign: 'right',
+                verticalAlign: 'bottom',
+            });
+        } else {
+            $container.imgLiquid({
+                fill: true,
+                horizontalAlign: 'center',
+                verticalAlign: 'center',
+            });
+        }
     }
 
     var $images = $slide.find('img.lazy-load');
