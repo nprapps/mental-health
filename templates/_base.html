@@ -30,6 +30,8 @@
     {{ CSS.push('less/filmstrip.less') }}
     {% endif %}
 
+    {{ CSS.push('less/graphics.less') }}
+
     {% block extra_css %}{% endblock extra_css %}
     {{ CSS.render('css/app.min.css') }}
 
