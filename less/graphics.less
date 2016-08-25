@@ -1,4 +1,18 @@
+@orange: #c76d47;
+@dark-blue: #4e7089;
+@icon-gray: #777;
+
 #svg-defs {
     display: none;
 }
 
+.graphic {
+    .icon {
+        fill: @icon-gray;
+    }
+
+    .highlight-visible .icon.icon-highlight {
+        fill: @orange;
+        transition: fill 800ms ease;
+    }
+}
