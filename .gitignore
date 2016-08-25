@@ -32,7 +32,6 @@ www/*.html
 www/css/*.min.*.css
 www/css/*.min.css
 www/css/*.less.css
-www/css/font/*
 www/css/icon/*
 www/css/rendered/*.css
 www/js/*.min.*.js
