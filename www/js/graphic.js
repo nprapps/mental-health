@@ -7,6 +7,7 @@ var eventsMap = {
 
 $(document).ready(function() {
     render('#graphic-0');
+    render('#graphic-1');
 });
 
 /*
@@ -32,7 +33,7 @@ var render = function(containerSelector) {
         nextState: nextState || 0
     });
 
-    //window.addEventListener('resize', updateLayout, false);
+    window.addEventListener('resize', updateLayout, false);
 }
 
 /*
