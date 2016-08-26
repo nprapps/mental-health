@@ -5,9 +5,23 @@ var eventsMap = {
     2: 'consolidateHighlightedIcons'
 };
 
+var graphicsMap = {
+    '#graphic-0': null,
+    '#graphic-1': null
+};
+
 $(document).ready(function() {
-    render('#graphic-0');
-    render('#graphic-1');
+    $.each(graphicsMap, function(gId) {
+        render(gId);
+    });
+
+    $('.slide').on('graphic:visible', function(e) {
+        // TODO standardize your jquery vs d3 use!
+        var graphicId = $(this).find('.graphic').attr('id');
+        var currentGraphic = graphicsMap['#' + graphicId];
+        var containerWidth = $('#' + graphicId).width();
+        currentGraphic.updateLayout(containerWidth);
+    });
 });
 
 /*
@@ -32,6 +46,8 @@ var render = function(containerSelector) {
         initState: initState || 0,
         nextState: nextState || 0
     });
+
+    graphicsMap[containerSelector] = thisGraphic;
 
     window.addEventListener('resize', updateLayout, false);
 }
