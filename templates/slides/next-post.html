@@ -19,28 +19,28 @@
     <div class="secondary-column">
         <div class="share-panel share-panel-section clearfix">
                 <div class="facebook">
-                <h3>{{ COPY.share.fb_share_prompt }}</h3>
+                <h3>{{ COPY.share.fb_share_prompt|smarty }}</h3>
                 <p class="button-wrapper">
                     <a class="btn-facebook" href="https://www.facebook.com/dialog/feed?app_id={{ COPY.share.facebook_app_id }}&amp;link={{ COPY.share.share_url|urlencode }}&amp;name={{ COPY.share.facebook_title|urlencode }}&amp;picture={{ COPY.share.facebook_image_url|urlencode }}&amp;redirect_uri={{ COPY.share.share_url|urlencode }}" target="_blank"><i class="fa fa-facebook"></i> <b> {{ COPY.share.fb_share_call }} </b></a>
                 </p>
             </div>
 
             <div class="support">
-                <h3>{{ COPY.share.support_prompt }}</h3>
+                <h3>{{ COPY.share.support_prompt|smarty }}</h3>
                 <p class="button-wrapper">
-                    <a class="btn-support" href="http://www.npr.org/donate"><i class="fa fa-heart"></i> <b> {{ COPY.share.support_call }} </b></a>
+                    <a class="btn-support" href="http://www.npr.org/donate"><i class="fa fa-heart"></i> <b> {{ COPY.share.support_call|smarty }} </b></a>
                 </p>
             </div>
 
             <div class="like-story">
-                <h3>{{ COPY.share.like_prompt }}</h3>
+                <h3>{{ COPY.share.like_prompt|smarty }}</h3>
 
                 <button class="btn btn-go btn-lg btn-like-story yes">Yes</button>
                 <button class="btn btn-go btn-lg btn-like-story no">No</button>
             </div>
 
             <div class="did-not-like">
-                <h3>{{ COPY.share.did_not_like_prompt }}</h3>
+                <h3>{{ COPY.share.did_not_like_prompt|smarty }}</h3>
 
                 <p class="button-wrapper">
                     <a class="dislike-email" href="mailto:nprlook@gmail.com?subject={{ COPY.share.email_subject }}"><i class="fa fa-envelope em"></i> <b> Email us your thoughts </b></a>
