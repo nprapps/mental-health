@@ -78,7 +78,7 @@ var initGraphic = function(config) {
         // Start by assuming a biggish screen. We will eventually come up with several widths, maybe?
         numItems = 200;
         rowItems = 20;
-        itemPadding = 5;
+        itemPadding = 8;
         itemAspect = 170/120;
         itemWidth = (chartWidth / rowItems) - itemPadding - itemPadding;
         itemHeight = itemAspect * itemWidth;
@@ -140,6 +140,8 @@ var initGraphic = function(config) {
 
     // Add icons for initial state
     self.initIcons = function() {
+        iconsGroup.classed('highlight-visible', false);
+
         iconsGroup.selectAll('.icon')
             .data(new Array(numItems))
                 .enter()
