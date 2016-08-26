@@ -177,6 +177,11 @@ var checkOverflow = function(index) {
     }
 }
 
+var triggerGraphicUpdate = function(toIndex) {
+    var $thisSlide = $slides.eq(toIndex);
+    $thisSlide.trigger('graphic:visible');
+};
+
 var onSlideChange = function(e, fromIndex, toIndex) {
     /*
     * Called transitioning between slides.
@@ -185,6 +190,7 @@ var onSlideChange = function(e, fromIndex, toIndex) {
     showNavigation(toIndex);
     trackCompletion(toIndex);
     checkOverflow(toIndex);
+    triggerGraphicUpdate(toIndex);
     document.activeElement.blur();
 
     if (APP_CONFIG.AUDIO) {
