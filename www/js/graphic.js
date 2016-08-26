@@ -18,9 +18,11 @@ $(document).ready(function() {
     $('.slide').on('graphic:visible', function(e) {
         // TODO standardize your jquery vs d3 use!
         var graphicId = $(this).find('.graphic').attr('id');
-        var currentGraphic = graphicsMap['#' + graphicId];
-        var containerWidth = $('#' + graphicId).width();
-        currentGraphic.updateLayout(containerWidth);
+        if (graphicId) {
+            var currentGraphic = graphicsMap['#' + graphicId];
+            var containerWidth = $('#' + graphicId).width();
+            currentGraphic.updateLayout(containerWidth);
+        }
     });
 });
 
