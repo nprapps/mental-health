@@ -2,12 +2,16 @@
 var eventsMap = {
     0: 'initIcons',
     1: 'showHighlightedIcons',
-    2: 'consolidateHighlightedIcons'
+    2: 'consolidateHighlightedIcons',
+    3: 'showOnlyHighlighted',
+    4: 'narrowDownHighlighted',
+    5: 'consolidateSmallestSet'
 };
 
 var graphicsMap = {
     '#graphic-0': null,
-    '#graphic-1': null
+    '#graphic-1': null,
+    '#graphic-2': null
 };
 
 $(document).ready(function() {
@@ -19,9 +23,12 @@ $(document).ready(function() {
         // TODO standardize your jquery vs d3 use!
         var graphicId = $(this).find('.graphic').attr('id');
         if (graphicId) {
+            var nextStateStr = $(this).find('.graphic').attr('data-next');
+            var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
             var currentGraphic = graphicsMap['#' + graphicId];
             var containerWidth = $('#' + graphicId).width();
-            currentGraphic.updateLayout(containerWidth);
+
+            currentGraphic.updateLayout(containerWidth, nextStateArray);
         }
     });
 });
@@ -34,19 +41,18 @@ var render = function(containerSelector) {
     var graphicElement = d3.select(containerSelector);
     var containerWidth = parseInt(graphicElement.style('width'));
     var initState = graphicElement.attr('data-state');
-    var nextState = graphicElement.attr('data-next');
     var thisGraphic;
 
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
-        thisGraphic.updateLayout(containerWidth);
+        var currentState = graphicElement.attr('data-current');
+        thisGraphic.updateLayout(containerWidth, [currentState]);
     }, 200);
 
     thisGraphic = initGraphic({
         container: containerSelector,
         width: containerWidth,
-        initState: initState || 0,
-        nextState: nextState || 0
+        initState: initState || 0
     });
 
     graphicsMap[containerSelector] = thisGraphic;
@@ -103,7 +109,7 @@ var initGraphic = function(config) {
     var defPrefix = config['container'].slice(1) + '-icon-';
 
     // Add icons as defs
-    for (var i=1; i<5; i++) {
+    for (var i=1; i<=5; i++) {
         var iconDef = d3.select('#svg-defs').select('#silhouette-'+ i).node().cloneNode(true);
         var appendedDef = svgDefs.node()
             .appendChild(iconDef);
@@ -119,9 +125,7 @@ var initGraphic = function(config) {
     var iconsGroup = chartElement.append('g')
         .attr('class', 'icons-g');
 
-    var selectedIndexes = [3,9,16,18,20,23,31,38,45,47,55,59,60,61,65,73,78,86,88,94,97,101,111,113,122,127,130,135,140,145,147,157,162,173,178,181,184,185,194,198];
-
-    self.updateLayout = function(containerWidth) {
+    self.updateLayout = function(containerWidth, nextArray) {
         config['width'] = containerWidth;
         self.calculateLayout();
 
@@ -134,21 +138,26 @@ var initGraphic = function(config) {
 
         iconsGroup.html('');
 
-        var currentState = config['nextState'] || config['initState'];
-        self.triggerStates(currentState);
+        self.triggerStates(nextArray);
     }
 
     // Add icons for initial state
     self.initIcons = function() {
         iconsGroup.classed('highlight-visible', false);
+        iconsGroup.classed('highlight-2-visible', false);
+        iconsGroup.classed('non-invisible', false);
 
         iconsGroup.selectAll('.icon')
-            .data(new Array(numItems))
+            .data(ICON_DATA)
                 .enter()
             .append('g')
                 .attr('class', function(d,i) {
-                    if (_.indexOf(selectedIndexes, i) > -1) {
-                        return 'icon icon-highlight';
+                    if (d['highlight']) {
+                        if (d['highlight_2']) {
+                            return 'icon icon-highlight icon-highlight-2';
+                        } else {
+                            return 'icon icon-highlight icon-highlight-2-non';
+                        }
                     } else {
                         return 'icon icon-non';
                     }
@@ -159,8 +168,8 @@ var initGraphic = function(config) {
                     return 'translate(' + xPos + ',' + yPos + ')';
                 })
                 .append('use')
-                    .attr('xlink:href', function() {
-                        var imgNum = Math.ceil(Math.random() * 4);
+                    .attr('xlink:href', function(d) {
+                        var imgNum = parseInt(d['img_num'], 10);
                         return '#' + defPrefix + imgNum;
                     })
                     .attr('transform', 'scale(' + scaleRatio + ')');
@@ -200,18 +209,49 @@ var initGraphic = function(config) {
             });
     };
 
-    self.triggerStates = function(initState, nextState) {
+    self.showOnlyHighlighted = function() {
+        iconsGroup.classed('highlight-visible', true);
+        iconsGroup.classed('non-invisible', true);
+    };
+
+    self.narrowDownHighlighted = function() {
+        iconsGroup.classed('highlight-2-visible', true);
+    };
+
+    self.consolidateSmallestSet = function() {
+        var highlightedItems = rowItems * 0.8;
+        var nonItems = rowItems - highlightedItems;
+
+        chartElement.selectAll('.icon-highlight-2')
+            .transition()
+                .duration(1500)
+            .attr('transform', function(d,i) {
+                var xPos = _getXPositionInGrid(highlightedItems, i);
+                var yPos = _getYPositionInGrid(highlightedItems, i);
+                return 'translate(' + xPos + ',' + yPos + ')';
+            });
+
+        var nonOffset = highlightedItems * (itemWidth + itemPadding + itemPadding);
+
+        chartElement.selectAll('.icon-highlight-2-non')
+            .transition()
+                .duration(1500)
+            .attr('transform', function(d,i) {
+                var xPos = _getXPositionInGrid(nonItems, i, nonOffset);
+                var yPos = _getYPositionInGrid(nonItems, i);
+                return 'translate(' + xPos + ',' + yPos + ')';
+            });
+    };
+
+    self.triggerStates = function(nextArray) {
         self.initIcons();
 
         // Run the function corresponding to the current state
-        if (initState && initState > 0) {
-            var transitionDelay = 10;
-            _.delay(self[eventsMap[initState]], transitionDelay);
-        }
-
-        if (nextState) {
-            var transitionDelay = 50;
-            _.delay(self[eventsMap[nextState]], transitionDelay);
+        if (nextArray) {
+            nextArray.forEach(function(v,i) {
+                var transitionDelay = 2000;
+                _.delay(self[eventsMap[v]], transitionDelay*i);
+            });
         }
     }
 
@@ -229,7 +269,7 @@ var initGraphic = function(config) {
     }
 
     self.chartElement = chartElement;
-    self.triggerStates(config['initState'], config['nextState']);
+    self.triggerStates([config['initState']]);
 
     return self;
 }
