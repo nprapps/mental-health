@@ -1,27 +1,7 @@
 {% extends '_slide.html' %}
 {% block slide_content %}
 <div class="roles-wrapper">
-    <div class="cameos">
-        <div class="nurse role">
-            <img class="lazy-load" data-src="nurse.png" alt="">
-        </div>
-
-        <div class="teacher role">
-            <img class="lazy-load" data-src="teacher.png" alt="">
-        </div>
-
-        <div class="counselor role">
-            <img class="lazy-load" data-src="counselor.png" alt="">
-        </div>
-
-        <div class="psych role">
-            <img class="lazy-load" data-src="psych.png" alt="">
-        </div>
-
-        <div class="student role">
-            <img class="lazy-load" data-src="student-sad.png" alt="">
-        </div>
-    </div>
+    <div class="cameos">{{ row.foreground_media }}</div>
 
     {{ row.text1|smarty }}
 </div>
