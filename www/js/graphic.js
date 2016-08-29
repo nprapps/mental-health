@@ -19,9 +19,12 @@ $(document).ready(function() {
         // TODO standardize your jquery vs d3 use!
         var graphicId = $(this).find('.graphic').attr('id');
         if (graphicId) {
+            var nextStateStr = $(this).find('.graphic').attr('data-next');
+            var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
             var currentGraphic = graphicsMap['#' + graphicId];
             var containerWidth = $('#' + graphicId).width();
-            currentGraphic.updateLayout(containerWidth);
+
+            currentGraphic.updateLayout(containerWidth, nextStateArray);
         }
     });
 });
@@ -34,7 +37,6 @@ var render = function(containerSelector) {
     var graphicElement = d3.select(containerSelector);
     var containerWidth = parseInt(graphicElement.style('width'));
     var initState = graphicElement.attr('data-state');
-    var nextState = graphicElement.attr('data-next');
     var thisGraphic;
 
     var updateLayout = _.debounce(function() {
@@ -45,8 +47,7 @@ var render = function(containerSelector) {
     thisGraphic = initGraphic({
         container: containerSelector,
         width: containerWidth,
-        initState: initState || 0,
-        nextState: nextState || 0
+        initState: initState || 0
     });
 
     graphicsMap[containerSelector] = thisGraphic;
@@ -119,7 +120,7 @@ var initGraphic = function(config) {
     var iconsGroup = chartElement.append('g')
         .attr('class', 'icons-g');
 
-    self.updateLayout = function(containerWidth) {
+    self.updateLayout = function(containerWidth, nextArray) {
         config['width'] = containerWidth;
         self.calculateLayout();
 
@@ -132,8 +133,7 @@ var initGraphic = function(config) {
 
         iconsGroup.html('');
 
-        var currentState = config['nextState'] || config['initState'];
-        self.triggerStates(currentState);
+        self.triggerStates(nextArray);
     }
 
     // Add icons for initial state
@@ -165,13 +165,17 @@ var initGraphic = function(config) {
     };
 
     // Show the highlighted icons
-    self.showHighlightedIcons = function() {
+    self.showHighlightedIcons = function(nextArray) {
         iconsGroup
             .classed('highlight-visible', true);
+
+        if (nextArray) {
+            _transitionState(nextArray);
+        }
     };
 
     // Move the highlighted icons into one consolidated bar
-    self.consolidateHighlightedIcons = function() {
+    self.consolidateHighlightedIcons = function(nextArray) {
         var highlightedItems = rowItems * 0.2;
         var nonItems = rowItems - highlightedItems;
 
@@ -196,22 +200,29 @@ var initGraphic = function(config) {
                 var yPos = _getYPositionInGrid(nonItems, i);
                 return 'translate(' + xPos + ',' + yPos + ')';
             });
+
+        if (nextArray) {
+            _transitionState(nextArray);
+        }
     };
 
-    self.triggerStates = function(initState, nextState) {
+    self.triggerStates = function(nextArray) {
         self.initIcons();
 
         // Run the function corresponding to the current state
-        if (initState && initState > 0) {
-            var transitionDelay = 10;
-            _.delay(self[eventsMap[initState]], transitionDelay);
+        if (nextArray) {
+            _transitionState(nextArray);
         }
 
-        if (nextState) {
-            var transitionDelay = 50;
-            _.delay(self[eventsMap[nextState]], transitionDelay);
-        }
     }
+
+    var _transitionState = function(stateArray) {
+        console.log(config['containerSelector'], stateArray);
+        if (stateArray && stateArray.length > 0) {
+            var transitionDelay = 500;
+            _.delay(self[eventsMap[stateArray[0]]], transitionDelay, stateArray.slice(1));
+        }
+    };
 
     // Some private helper functions
     var _getXPositionInGrid = function(setItems, itemIndex, offset) {
@@ -227,7 +238,7 @@ var initGraphic = function(config) {
     }
 
     self.chartElement = chartElement;
-    self.triggerStates(config['initState'], config['nextState']);
+    self.triggerStates([config['initState']]);
 
     return self;
 }
