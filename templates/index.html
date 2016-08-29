@@ -28,7 +28,7 @@
 {% include "_svg_defs.html" %}
 
 <script type="text/javascript">
-    var ICON_DATA = {{ COPY.icons.json() }};
+    var ICON_DATA = {{ COPY.icons.json()|safe }};
 </script>
 
 
