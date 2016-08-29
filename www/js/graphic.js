@@ -103,7 +103,7 @@ var initGraphic = function(config) {
     var defPrefix = config['container'].slice(1) + '-icon-';
 
     // Add icons as defs
-    for (var i=1; i<5; i++) {
+    for (var i=1; i<=5; i++) {
         var iconDef = d3.select('#svg-defs').select('#silhouette-'+ i).node().cloneNode(true);
         var appendedDef = svgDefs.node()
             .appendChild(iconDef);
@@ -118,8 +118,6 @@ var initGraphic = function(config) {
     // Draw here!
     var iconsGroup = chartElement.append('g')
         .attr('class', 'icons-g');
-
-    var selectedIndexes = [3,9,16,18,20,23,31,38,45,47,55,59,60,61,65,73,78,86,88,94,97,101,111,113,122,127,130,135,140,145,147,157,162,173,178,181,184,185,194,198];
 
     self.updateLayout = function(containerWidth) {
         config['width'] = containerWidth;
@@ -143,11 +141,11 @@ var initGraphic = function(config) {
         iconsGroup.classed('highlight-visible', false);
 
         iconsGroup.selectAll('.icon')
-            .data(new Array(numItems))
+            .data(ICON_DATA)
                 .enter()
             .append('g')
                 .attr('class', function(d,i) {
-                    if (_.indexOf(selectedIndexes, i) > -1) {
+                    if (d['highlight']) {
                         return 'icon icon-highlight';
                     } else {
                         return 'icon icon-non';
@@ -159,8 +157,8 @@ var initGraphic = function(config) {
                     return 'translate(' + xPos + ',' + yPos + ')';
                 })
                 .append('use')
-                    .attr('xlink:href', function() {
-                        var imgNum = Math.ceil(Math.random() * 4);
+                    .attr('xlink:href', function(d) {
+                        var imgNum = parseInt(d['img_num'], 10);
                         return '#' + defPrefix + imgNum;
                     })
                     .attr('transform', 'scale(' + scaleRatio + ')');
