@@ -245,7 +245,6 @@ var initGraphic = function(config) {
 
     self.triggerStates = function(nextArray) {
         self.initIcons();
-        console.log(nextArray);
 
         // Run the function corresponding to the current state
         if (nextArray) {
