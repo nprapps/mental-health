@@ -2,12 +2,16 @@
 var eventsMap = {
     0: 'initIcons',
     1: 'showHighlightedIcons',
-    2: 'consolidateHighlightedIcons'
+    2: 'consolidateHighlightedIcons',
+    3: 'showOnlyHighlighted',
+    4: 'narrowDownHighlighted',
+    5: 'consolidateSmallestSet'
 };
 
 var graphicsMap = {
     '#graphic-0': null,
-    '#graphic-1': null
+    '#graphic-1': null,
+    '#graphic-2': null
 };
 
 $(document).ready(function() {
@@ -140,6 +144,8 @@ var initGraphic = function(config) {
     // Add icons for initial state
     self.initIcons = function() {
         iconsGroup.classed('highlight-visible', false);
+        iconsGroup.classed('highlight-2-visible', false);
+        iconsGroup.classed('non-invisible', false);
 
         iconsGroup.selectAll('.icon')
             .data(ICON_DATA)
@@ -147,7 +153,11 @@ var initGraphic = function(config) {
             .append('g')
                 .attr('class', function(d,i) {
                     if (d['highlight']) {
-                        return 'icon icon-highlight';
+                        if (d['highlight_2']) {
+                            return 'icon icon-highlight icon-highlight-2';
+                        } else {
+                            return 'icon icon-highlight icon-highlight-2-non';
+                        }
                     } else {
                         return 'icon icon-non';
                     }
@@ -199,14 +209,49 @@ var initGraphic = function(config) {
             });
     };
 
+    self.showOnlyHighlighted = function() {
+        iconsGroup.classed('highlight-visible', true);
+        iconsGroup.classed('non-invisible', true);
+    };
+
+    self.narrowDownHighlighted = function() {
+        iconsGroup.classed('highlight-2-visible', true);
+    };
+
+    self.consolidateSmallestSet = function() {
+        var highlightedItems = rowItems * 0.8;
+        var nonItems = rowItems - highlightedItems;
+
+        chartElement.selectAll('.icon-highlight-2')
+            .transition()
+                .duration(1500)
+            .attr('transform', function(d,i) {
+                var xPos = _getXPositionInGrid(highlightedItems, i);
+                var yPos = _getYPositionInGrid(highlightedItems, i);
+                return 'translate(' + xPos + ',' + yPos + ')';
+            });
+
+        var nonOffset = highlightedItems * (itemWidth + itemPadding + itemPadding);
+
+        chartElement.selectAll('.icon-highlight-2-non')
+            .transition()
+                .duration(1500)
+            .attr('transform', function(d,i) {
+                var xPos = _getXPositionInGrid(nonItems, i, nonOffset);
+                var yPos = _getYPositionInGrid(nonItems, i);
+                return 'translate(' + xPos + ',' + yPos + ')';
+            });
+    };
+
     self.triggerStates = function(nextArray) {
         self.initIcons();
+        console.log(nextArray);
 
         // Run the function corresponding to the current state
         if (nextArray) {
             nextArray.forEach(function(v,i) {
                 var transitionDelay = 2000;
-                _.delay(self[eventsMap[v]], transitionDelay*(i+1));
+                _.delay(self[eventsMap[v]], transitionDelay*i);
             });
         }
     }
