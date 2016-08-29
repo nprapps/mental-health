@@ -41,7 +41,8 @@ var render = function(containerSelector) {
 
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
-        thisGraphic.updateLayout(containerWidth);
+        var currentState = graphicElement.attr('data-current');
+        thisGraphic.updateLayout(containerWidth, [currentState]);
     }, 200);
 
     thisGraphic = initGraphic({
@@ -165,17 +166,13 @@ var initGraphic = function(config) {
     };
 
     // Show the highlighted icons
-    self.showHighlightedIcons = function(nextArray) {
+    self.showHighlightedIcons = function() {
         iconsGroup
             .classed('highlight-visible', true);
-
-        if (nextArray) {
-            _transitionState(nextArray);
-        }
     };
 
     // Move the highlighted icons into one consolidated bar
-    self.consolidateHighlightedIcons = function(nextArray) {
+    self.consolidateHighlightedIcons = function() {
         var highlightedItems = rowItems * 0.2;
         var nonItems = rowItems - highlightedItems;
 
@@ -200,10 +197,6 @@ var initGraphic = function(config) {
                 var yPos = _getYPositionInGrid(nonItems, i);
                 return 'translate(' + xPos + ',' + yPos + ')';
             });
-
-        if (nextArray) {
-            _transitionState(nextArray);
-        }
     };
 
     self.triggerStates = function(nextArray) {
@@ -211,18 +204,12 @@ var initGraphic = function(config) {
 
         // Run the function corresponding to the current state
         if (nextArray) {
-            _transitionState(nextArray);
+            nextArray.forEach(function(v,i) {
+                var transitionDelay = 2000;
+                _.delay(self[eventsMap[v]], transitionDelay*(i+1));
+            });
         }
-
     }
-
-    var _transitionState = function(stateArray) {
-        console.log(config['containerSelector'], stateArray);
-        if (stateArray && stateArray.length > 0) {
-            var transitionDelay = 500;
-            _.delay(self[eventsMap[stateArray[0]]], transitionDelay, stateArray.slice(1));
-        }
-    };
 
     // Some private helper functions
     var _getXPositionInGrid = function(setItems, itemIndex, offset) {
