@@ -88,8 +88,8 @@ var initGraphic = function(config) {
         // Start by assuming a biggish screen. We will eventually come up with several widths, maybe?
         numItems = isMobile ? 100 : 200;
         rowItems = isMobile ? 10 : 20;
-        itemPadding = isMobile ? 4 : 8;
-        itemAspect = 170/120;
+        itemPadding = (chartWidth / rowItems) * 0.15;
+        itemAspect = 180/120;
         itemWidth = (chartWidth / rowItems) - itemPadding - itemPadding;
         itemHeight = itemAspect * itemWidth;
         chartHeight = (numItems / rowItems) * (itemHeight + itemPadding + itemPadding);
