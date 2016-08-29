@@ -45,8 +45,9 @@ var render = function(containerSelector) {
 
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
-        var currentState = graphicElement.attr('data-current');
-        thisGraphic.updateLayout(containerWidth, [currentState]);
+        var nextStateStr = graphicElement.attr('data-next');
+        var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
+        thisGraphic.updateLayout(containerWidth, nextStateArray);
     }, 200);
 
     thisGraphic = initGraphic({
@@ -69,8 +70,11 @@ var initGraphic = function(config) {
         chartWidth, chartHeight,
         numItems, rowItems, itemPadding, itemAspect, itemWidth, itemHeight,
         iconWidth, scaleRatio;
+    var isMobile;
 
     self.calculateLayout = function() {
+        isMobile = config['width'] < 500 ? true : false;
+
         margins = {
             top: 0,
             right: 15,
@@ -82,10 +86,10 @@ var initGraphic = function(config) {
         chartWidth = config['width'] - margins['left'] - margins['right'];
 
         // Start by assuming a biggish screen. We will eventually come up with several widths, maybe?
-        numItems = 200;
-        rowItems = 20;
-        itemPadding = 8;
-        itemAspect = 170/120;
+        numItems = isMobile ? 100 : 200;
+        rowItems = isMobile ? 10 : 20;
+        itemPadding = (chartWidth / rowItems) * 0.15;
+        itemAspect = 180/120;
         itemWidth = (chartWidth / rowItems) - itemPadding - itemPadding;
         itemHeight = itemAspect * itemWidth;
         chartHeight = (numItems / rowItems) * (itemHeight + itemPadding + itemPadding);
@@ -147,8 +151,10 @@ var initGraphic = function(config) {
         iconsGroup.classed('highlight-2-visible', false);
         iconsGroup.classed('non-invisible', false);
 
+        var iconData = ICON_DATA.slice(0, numItems);
+
         iconsGroup.selectAll('.icon')
-            .data(ICON_DATA)
+            .data(iconData)
                 .enter()
             .append('g')
                 .attr('class', function(d,i) {
