@@ -45,8 +45,9 @@ var render = function(containerSelector) {
 
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
-        var currentState = graphicElement.attr('data-current');
-        thisGraphic.updateLayout(containerWidth, [currentState]);
+        var nextStateStr = graphicElement.attr('data-next');
+        var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
+        thisGraphic.updateLayout(containerWidth, nextStateArray);
     }, 200);
 
     thisGraphic = initGraphic({
