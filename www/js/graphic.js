@@ -244,19 +244,21 @@ var initGraphic = function(config) {
 
     // Take the icons representing those with mental health disorders and consolidate
     self.consolidateSmallestSet = function() {
-        var highlightedItems = rowItems * 0.8;
-        var nonItems = rowItems - highlightedItems;
+        var highlightedItems = (rowItems / 2) * 0.8;
+        var nonItems = (rowItems / 2) - highlightedItems;
+
+        var subsetOffset = (rowItems / 4) * (itemWidth + itemPadding + itemPadding);
 
         chartElement.selectAll('.icon-highlight-2')
             .transition()
                 .duration(1500)
             .attr('transform', function(d,i) {
-                var xPos = _getXPositionInGrid(highlightedItems, i);
+                var xPos = _getXPositionInGrid(highlightedItems, i, subsetOffset);
                 var yPos = _getYPositionInGrid(highlightedItems, i);
                 return 'translate(' + xPos + ',' + yPos + ')';
             });
 
-        var nonOffset = highlightedItems * (itemWidth + itemPadding + itemPadding);
+        var nonOffset = (highlightedItems * (itemWidth + itemPadding + itemPadding)) + subsetOffset;
 
         chartElement.selectAll('.icon-highlight-2-non')
             .transition()
