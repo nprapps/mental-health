@@ -1,5 +1,7 @@
 @orange: #c76d47;
 @dark-blue: #4e7089;
+@pale-blue: #61829e;
+@pink: rgba(200, 66, 119, 1);
 @icon-gray: #777;
 @icon-faded: #444;
 
@@ -28,10 +30,12 @@
         .icon.icon-highlight {
             &.icon-highlight-2 {
                 opacity: 1;
+                transition: fill 1200ms ease;
+                fill: @pale-blue;
             }
 
             &.icon-highlight-2-non {
-                fill: @icon-faded;
+                fill: mix(@orange, #222, 30%);
                 transition: fill 1200ms ease;
             }
         }
