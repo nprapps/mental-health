@@ -86,7 +86,7 @@ var initGraphic = function(config) {
         isMobile = config['width'] < 500 ? true : false;
 
         margins = {
-            top: 0,
+            top: 20,
             right: 15,
             bottom: 20,
             left: 15
@@ -275,7 +275,7 @@ var initGraphic = function(config) {
         // Run the function corresponding to the current state
         if (nextArray) {
             nextArray.forEach(function(v,i) {
-                var transitionDelay = 2000;
+                var transitionDelay = 1200;
                 _.delay(self[eventsMap[v]], transitionDelay*i);
             });
         }
