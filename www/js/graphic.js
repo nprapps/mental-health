@@ -19,9 +19,13 @@ $(document).ready(function() {
         render(gId);
     });
 
+    // Listen for a custom event fired in app.js on slide change
     $('.slide').on('graphic:visible', function(e) {
         // TODO standardize your jquery vs d3 use!
         var graphicId = $(this).find('.graphic').attr('id');
+
+        // If there is a graphic that corresponds with the visible slide,
+        // trigger the animations for ensuing states
         if (graphicId) {
             var nextStateStr = $(this).find('.graphic').attr('data-next');
             var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
@@ -34,7 +38,7 @@ $(document).ready(function() {
 });
 
 /*
- * Initialize all graphics
+ * Render initial graphic
  */
 var render = function(containerSelector) {
     // Render the chart!
@@ -43,6 +47,7 @@ var render = function(containerSelector) {
     var initState = graphicElement.attr('data-state');
     var thisGraphic;
 
+    // A debounced update function to redraw the chart on window resize
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
         var nextStateStr = graphicElement.attr('data-next');
@@ -50,19 +55,23 @@ var render = function(containerSelector) {
         thisGraphic.updateLayout(containerWidth, nextStateArray);
     }, 200);
 
+    // The initGraphic function returns an object with references to the d3 selection
+    // and public functions to reference in the global scope
     thisGraphic = initGraphic({
         container: containerSelector,
         width: containerWidth,
         initState: initState || 0
     });
 
+    // Assign this to our graphicsMap
     graphicsMap[containerSelector] = thisGraphic;
 
+    // Add a listener for resize to run the debounced update function
     window.addEventListener('resize', updateLayout, false);
 }
 
 /*
- * Render a graphic.
+ * Initialize the graphic object, add to the DOM and set up layout functions
  */
 var initGraphic = function(config) {
     var self = {};
@@ -72,6 +81,7 @@ var initGraphic = function(config) {
         iconWidth, scaleRatio;
     var isMobile;
 
+    // Calculate layout variables like chart width, etc. that change on resize
     self.calculateLayout = function() {
         isMobile = config['width'] < 500 ? true : false;
 
@@ -85,7 +95,7 @@ var initGraphic = function(config) {
         // Calculate actual chart dimensions
         chartWidth = config['width'] - margins['left'] - margins['right'];
 
-        // Start by assuming a biggish screen. We will eventually come up with several widths, maybe?
+        // Use a smaller set of icons on mobile
         numItems = isMobile ? 100 : 200;
         rowItems = isMobile ? 10 : 20;
         itemPadding = (chartWidth / rowItems) * 0.15;
@@ -94,14 +104,15 @@ var initGraphic = function(config) {
         itemHeight = itemAspect * itemWidth;
         chartHeight = (numItems / rowItems) * (itemHeight + itemPadding + itemPadding);
 
-        iconWidth = 86; // I DON'T KNOW WHAT TO DO ABOUT THIS
-        scaleRatio = itemWidth / iconWidth;
+        iconWidth = 86; // Not ideal, but this is the pixel width of the SVG icons, for calculating the scale
+        scaleRatio = itemWidth / iconWidth; // This will be used in a transform scale() attribute
     }
 
     // Clear existing graphic (for redraw)
     var containerElement = d3.select(config['container']);
     containerElement.html('');
 
+    // Get layout calculations based on the current width
     self.calculateLayout();
 
     // Create container
@@ -109,10 +120,11 @@ var initGraphic = function(config) {
         .attr('width', chartWidth + margins['left'] + margins['right'])
         .attr('height', chartHeight + margins['top'] + margins['bottom']);
 
+    // Add the svg icons one time as defs with ids unique to each graphic
     var svgDefs = svgElement.append('defs');
     var defPrefix = config['container'].slice(1) + '-icon-';
 
-    // Add icons as defs
+    // Append svg icons as defs
     for (var i=1; i<=5; i++) {
         var iconDef = d3.select('#svg-defs').select('#silhouette-'+ i).node().cloneNode(true);
         var appendedDef = svgDefs.node()
@@ -122,13 +134,14 @@ var initGraphic = function(config) {
             .attr('id', defPrefix + i);
     }
 
+    // Add the canvas for the chart!
     var chartElement = svgElement.append('g')
         .attr('transform', 'translate(' + margins['left'] + ',' + margins['top'] + ')');
 
-    // Draw here!
     var iconsGroup = chartElement.append('g')
         .attr('class', 'icons-g');
 
+    // Public wrapper for recalculating dimensions if necessary, redrawing chart and triggering animations
     self.updateLayout = function(containerWidth, nextArray) {
         config['width'] = containerWidth;
         self.calculateLayout();
@@ -151,6 +164,7 @@ var initGraphic = function(config) {
         iconsGroup.classed('highlight-2-visible', false);
         iconsGroup.classed('non-invisible', false);
 
+        // Use a subset of icons for small screens
         var iconData = ICON_DATA.slice(0, numItems);
 
         iconsGroup.selectAll('.icon')
@@ -158,6 +172,7 @@ var initGraphic = function(config) {
                 .enter()
             .append('g')
                 .attr('class', function(d,i) {
+                    // Set up classes for various animations
                     if (d['highlight']) {
                         if (d['highlight_2']) {
                             return 'icon icon-highlight icon-highlight-2';
@@ -175,13 +190,14 @@ var initGraphic = function(config) {
                 })
                 .append('use')
                     .attr('xlink:href', function(d) {
+                        // Grab the randomized icon filename from the spreadsheet icon data
                         var imgNum = parseInt(d['img_num'], 10);
                         return '#' + defPrefix + imgNum;
                     })
                     .attr('transform', 'scale(' + scaleRatio + ')');
     };
 
-    // Show the highlighted icons
+    // Show the highlighted icons for students with mental health disorders
     self.showHighlightedIcons = function() {
         iconsGroup
             .classed('highlight-visible', true);
@@ -215,15 +231,18 @@ var initGraphic = function(config) {
             });
     };
 
+    // Show only the highlighted icons, not the non-MH ones
     self.showOnlyHighlighted = function() {
         iconsGroup.classed('highlight-visible', true);
         iconsGroup.classed('non-invisible', true);
     };
 
+    // Show the subset of icons for those not getting treatment
     self.narrowDownHighlighted = function() {
         iconsGroup.classed('highlight-2-visible', true);
     };
 
+    // Take the icons representing those with mental health disorders and consolidate
     self.consolidateSmallestSet = function() {
         var highlightedItems = rowItems * 0.8;
         var nonItems = rowItems - highlightedItems;
@@ -249,6 +268,7 @@ var initGraphic = function(config) {
             });
     };
 
+    // Trigger state animations with some delay in between
     self.triggerStates = function(nextArray) {
         self.initIcons();
 
@@ -261,7 +281,7 @@ var initGraphic = function(config) {
         }
     }
 
-    // Some private helper functions
+    // Some private helper functions for positioning
     var _getXPositionInGrid = function(setItems, itemIndex, offset) {
         var offset = offset || 0;
         var colNum = itemIndex - (setItems * Math.floor(itemIndex / setItems));
@@ -274,6 +294,7 @@ var initGraphic = function(config) {
         return (rowNum * (itemHeight + itemPadding + itemPadding)) + itemPadding + offset;
     }
 
+    // Make the d3 element available globally, trigger animations and return this as an object
     self.chartElement = chartElement;
     self.triggerStates([config['initState']]);
 
