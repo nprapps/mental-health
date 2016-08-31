@@ -209,6 +209,7 @@ var initGraphic = function(config) {
                     .attr('transform', 'scale(' + scaleRatio + ')');
     };
 
+    // Stagger the appearance of icons, giving the effect of tiling them across the screen
     self.tileIcons = function() {
         iconsGroup.selectAll('.icon')
             .attr('opacity', 0);
