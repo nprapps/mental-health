@@ -147,6 +147,37 @@ var initGraphic = function(config) {
             .attr('id', defPrefix + i);
     }
 
+    // Add an SVG filter for a drop shadow
+    // Based on code here: http://bl.ocks.org/cpbotha/5200394
+    var filter = svgDefs.append('filter')
+        .attr('id', defPrefix + 'shadow')
+        .attr('height', '130%');
+
+    // SourceAlpha refers to opacity of graphic that this filter will be applied to
+    // convolve that with a Gaussian with standard deviation 3 and store result
+    // in blur
+    filter.append("feGaussianBlur")
+        .attr("in", "SourceAlpha")
+        .attr("stdDeviation", 5)
+        .attr("result", "blur");
+
+    // translate output of Gaussian blur to the right and downwards with 2px
+    // store result in offsetBlur
+    filter.append("feOffset")
+        .attr("in", "blur")
+        .attr("dx", 2)
+        .attr("dy", 2)
+        .attr("result", "offsetBlur");
+
+    // overlay original SourceGraphic over translated blurred opacity by using
+    // feMerge filter. Order of specifying inputs is important!
+    var feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode")
+        .attr("in", "offsetBlur")
+    feMerge.append("feMergeNode")
+        .attr("in", "SourceGraphic");
+
+
     // Add the canvas for the chart!
     var chartElement = svgElement.append('g')
         .attr('transform', 'translate(' + margins['left'] + ',' + margins['top'] + ')');
@@ -207,6 +238,7 @@ var initGraphic = function(config) {
                         var imgNum = parseInt(d['img_num'], 10);
                         return '#' + defPrefix + imgNum;
                     })
+                    .style('filter', 'url(#' + defPrefix + 'shadow')
                     .attr('transform', 'scale(' + scaleRatio + ')');
     };
 
