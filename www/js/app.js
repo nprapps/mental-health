@@ -121,7 +121,7 @@ var loadImages = function($slide) {
     }
 
     if (bgimg.attr('src')) {
-        if (_.contains([ 'slide-start', 'slide-next' ], $slide[0]['id'])) {
+        if (_.contains([ 'slide-start', 'slide-next', 'slide-closing02' ], $slide[0]['id'])) {
             $container.imgLiquid({
                 fill: true,
                 horizontalAlign: 'right',
