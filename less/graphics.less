@@ -2,8 +2,8 @@
 @dark-blue: #4e7089;
 @pale-blue: #61829e;
 @pink: rgba(200, 66, 119, 1);
-@icon-gray: #777;
-@icon-faded: #444;
+@icon-gray: #aaa;
+@icon-faded: #666;
 
 #svg-defs {
     display: none;
@@ -12,10 +12,10 @@
 .graphic {
     .icon {
         fill: @icon-gray;
+        transition: opacity 150ms ease;
 
         &.init-hidden {
             opacity: 0;
-            transition: opacity 200ms ease;
         }
     }
 
@@ -26,8 +26,9 @@
         }
 
         .icon.icon-non {
-            fill: @icon-faded;
+            fill: @icon-gray;
             transition: fill 1200ms ease;
+            opacity: 0.5;
         }
     }
 
@@ -36,12 +37,12 @@
             &.icon-highlight-2 {
                 opacity: 1;
                 transition: fill 1200ms ease;
-                fill: @pale-blue;
+                fill: saturate(lighten(@orange, 10%), 14%);
             }
 
             &.icon-highlight-2-non {
-                fill: mix(@orange, #222, 30%);
-                transition: fill 1200ms ease;
+                opacity: 0.5;
+                transition: opacity 1200ms ease;
             }
         }
     }

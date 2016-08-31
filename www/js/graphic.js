@@ -212,7 +212,7 @@ var initGraphic = function(config) {
     // Stagger the appearance of icons, giving the effect of tiling them across the screen
     self.tileIcons = function() {
         iconsGroup.selectAll('.icon')
-            .attr('opacity', 0);
+            .classed('init-hidden', true);
 
         iconsGroup.selectAll('.icon')
             .transition()
@@ -221,9 +221,7 @@ var initGraphic = function(config) {
                 })
                 .each('start', function() {
                     d3.select(this)
-                        .attr('opacity', 1)
-                        .transition()
-                            .duration(100);
+                        .classed('init-hidden', false);
                 });
     };
 
