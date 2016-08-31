@@ -1,11 +1,12 @@
 // Map of functions that correspond with state numbers
 var eventsMap = {
-    0: 'tileIcons',
-    1: 'showHighlightedIcons',
-    2: 'consolidateHighlightedIcons',
-    3: 'showOnlyHighlighted',
-    4: 'narrowDownHighlighted',
-    5: 'consolidateSmallestSet'
+    0: 'initIcons',
+    1: 'tileIcons',
+    2: 'showHighlightedIcons',
+    3: 'consolidateHighlightedIcons',
+    4: 'showOnlyHighlighted',
+    5: 'narrowDownHighlighted',
+    6: 'consolidateSmallestSet'
 };
 
 var graphicsMap = {
