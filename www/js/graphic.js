@@ -210,16 +210,19 @@ var initGraphic = function(config) {
     };
 
     self.tileIcons = function() {
-        console.log('tileIcons');
         iconsGroup.selectAll('.icon')
             .attr('opacity', 0);
 
         iconsGroup.selectAll('.icon')
-            .attr('opacity', 1)
             .transition()
-                .duration(5000)
                 .delay(function(d,i) {
-                    return i * 200;
+                    return 1000 + (i * 20);
+                })
+                .each('start', function() {
+                    d3.select(this)
+                        .attr('opacity', 1)
+                        .transition()
+                            .duration(100);
                 });
     };
 
