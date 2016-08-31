@@ -1,51 +1,60 @@
-.quote {
+.slide.quote {
+    text-align: left;
 
-    .full-block-cell {
-        vertical-align: bottom;
-        padding-bottom: 100px;
+    .full-block-cell { vertical-align: middle; }
 
-        .full-block-content {margin: 0;}
-    }
+    .full-block-content {
+        max-width: 100%;
+        margin: 0 auto;
 
-    .quote-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 225px;
-        .background-size(cover);
-        background-position: top left;
-        @media @screen-small-above {
-            height: 100%;
-            background-position: center center;
+        .framed-text-box {
+            margin: 0 auto;
+            background: rgba(228, 131, 71, 0.5);
+            padding: 20px;
+
+            @media @screen-small-above {
+                max-width: 500px;
+                padding: 100px 60px;
+            }
+
+            @media @screen-medium-above {
+                max-width: 800px;
+            }
         }
     }
 
     .quote-text {
-        position: absolute;
-        top: 225px;
-        right: 0;
-        padding: 20px 20px 70px 20px;
-        color: #ddd;
+        border: none;
+        padding: 0;
+        margin: 0 0 20px 0;
 
-        @media @screen-small-above {
-            top: auto;
-            bottom: 90px;
-            right: 25px;
-            max-width: 300px;
-            padding: 20px;
-            background-color: rgba(0,0,0,.8);
-        }
+        @media @screen-small-above { margin-bottom: 30px; }
 
-        blockquote {
-            border: 0;
-            margin: 0;
-            padding: 0;
+        &:before {
+            display: block;
+            content: '\201C';
+            margin-bottom: -10px;
+            color: #fff;
+            font-size: 46px;
+            font-weight: 700;
+            line-height: 1;
 
-            font-size: 13px;
             @media @screen-small-above {
-                font-size: 18px;
+                margin-bottom: -15px;
+                font-size: 72px;
             }
         }
+    }
+
+    .quote-credit {
+        text-shadow: none;
+        line-height: 1.5;
+        margin: 0;
+        opacity: 0.7;
+        font-size: @small-type;
+
+        @media @screen-small-above { font-size: 16px; }
+
+        strong { opacity: 0.9; }
     }
 }

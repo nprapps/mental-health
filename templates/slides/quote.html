@@ -1,0 +1,7 @@
+{% extends '_slide.html' %}
+{% block slide_content %}
+    <div class="framed-text-box">
+        <blockquote class="quote-text">{{ row.text1|smarty }}</blockquote>
+        <p class="quote-credit">{{ row.text2|smarty }}</p>
+    </div>
+{% endblock %}
