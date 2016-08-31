@@ -1,6 +1,6 @@
 // Map of functions that correspond with state numbers
 var eventsMap = {
-    0: 'initIcons',
+    0: 'tileIcons',
     1: 'showHighlightedIcons',
     2: 'consolidateHighlightedIcons',
     3: 'showOnlyHighlighted',
@@ -207,6 +207,20 @@ var initGraphic = function(config) {
                         return '#' + defPrefix + imgNum;
                     })
                     .attr('transform', 'scale(' + scaleRatio + ')');
+    };
+
+    self.tileIcons = function() {
+        console.log('tileIcons');
+        iconsGroup.selectAll('.icon')
+            .attr('opacity', 0);
+
+        iconsGroup.selectAll('.icon')
+            .attr('opacity', 1)
+            .transition()
+                .duration(5000)
+                .delay(function(d,i) {
+                    return i * 200;
+                });
     };
 
     // Show the highlighted icons for students with mental health disorders

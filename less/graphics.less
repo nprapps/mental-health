@@ -12,6 +12,11 @@
 .graphic {
     .icon {
         fill: @icon-gray;
+
+        &.init-hidden {
+            opacity: 0;
+            transition: opacity 200ms ease;
+        }
     }
 
     .highlight-visible {
