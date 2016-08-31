@@ -405,6 +405,8 @@ img {
     }
 }
 
+#slide-start { background-color: #111; }
+
 #slide-06 {
     .full-block-content {
         font-size: 24px;
@@ -427,10 +429,18 @@ img {
 
 #slide-disorder01,
 #slide-disorder02 {
+    .full-block .full-block-cell {
+        vertical-align: top;
+        padding-top: 44px;
+    }
     img {
         display: block;
         margin: 0 auto 10px auto;
-        border: 5px solid #fff;
-        width: 75%;
+        border: 2px solid #fff;
+
+        @media @screen-small-above {
+            width: 80%;
+            border: 5px solid #fff;
+        }
     }
 }
