@@ -104,6 +104,18 @@ var initGraphic = function(config) {
         itemHeight = itemAspect * itemWidth;
         chartHeight = (numItems / rowItems) * (itemHeight + itemPadding + itemPadding);
 
+        // Check to see if these calculations overflow the vertical viewport
+        var containerOffset = $(config['container']).offset().top;
+        var totalY = containerOffset + chartHeight + margins['top'] + margins['bottom'];
+        if (window.innerHeight < totalY) {
+            // If so, reverse-engineer the calculations to fit the height
+            var fitHeight = window.innerHeight - (totalY - chartHeight);
+            chartHeight = fitHeight;
+            itemHeight = (fitHeight / (numItems / rowItems)) - itemPadding - itemPadding;
+            itemWidth = itemHeight / itemAspect;
+            chartWidth = (itemWidth + itemPadding + itemPadding) * rowItems;
+        }
+
         iconWidth = 86; // Not ideal, but this is the pixel width of the SVG icons, for calculating the scale
         scaleRatio = itemWidth / iconWidth; // This will be used in a transform scale() attribute
     }
