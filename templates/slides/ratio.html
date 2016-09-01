@@ -1,4 +1,10 @@
 {% extends '_slide.html' %}
 {% block slide_content %}
     {{ row.text1|smarty }}
+    <div class="density-viz">
+        <img class="lazy-load" data-src="{{ row.foreground_media }}" alt="Visualization of ratio">
+        <div class="density-label-wrap">
+            <span class="density-label">{{ row.text2|smarty }}</span>
+        </div>
+    </div>
 {% endblock %}
