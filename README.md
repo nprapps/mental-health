@@ -417,12 +417,15 @@ The Google Analytics events tracked in this application are:
 
 |Category|Action|Label|Value|
 |--------|------|-----|-----|
-|mental-health|tweet|`location`||
-|mental-health|facebook|`location`||
-|mental-health|email|`location`||
-|mental-health|new-comment||
-|mental-health|open-share-discuss||
-|mental-health|close-share-discuss||
-|mental-health|summary-copied||
-|mental-health|featured-tweet-action|`action`|
-|mental-health|featured-facebook-action|`action`|
+|mental-health|slide-exit|`slideIndex`|`timeOnSlide`|
+|mental-health|exit-stard-card-button-click|`slideIndex`||
+|mental-health|exit-keyboard|`slideIndex`||
+|mental-health|exit-next-button-click|`slideIndex`|
+|mental-health|exit-previous-button-click|`slideIndex`|
+|mental-health|completion|`percentage`|
+|mental-health|tests-run|`test`|
+|mental-health|like-story-yes|`test`|
+|mental-health|like-story-no||
+|mental-health|facebook-share-click||
+|mental-health|support-btn-click||
+|mental-health|email-btn-click||
