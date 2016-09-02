@@ -147,37 +147,6 @@ var initGraphic = function(config) {
             .attr('id', defPrefix + i);
     }
 
-    // Add an SVG filter for a drop shadow
-    // Based on code here: http://bl.ocks.org/cpbotha/5200394
-    var filter = svgDefs.append('filter')
-        .attr('id', defPrefix + 'shadow')
-        .attr('height', '130%');
-
-    // SourceAlpha refers to opacity of graphic that this filter will be applied to
-    // convolve that with a Gaussian with standard deviation 3 and store result
-    // in blur
-    filter.append("feGaussianBlur")
-        .attr("in", "SourceAlpha")
-        .attr("stdDeviation", 5)
-        .attr("result", "blur");
-
-    // translate output of Gaussian blur to the right and downwards with 2px
-    // store result in offsetBlur
-    filter.append("feOffset")
-        .attr("in", "blur")
-        .attr("dx", 2)
-        .attr("dy", 2)
-        .attr("result", "offsetBlur");
-
-    // overlay original SourceGraphic over translated blurred opacity by using
-    // feMerge filter. Order of specifying inputs is important!
-    var feMerge = filter.append("feMerge");
-    feMerge.append("feMergeNode")
-        .attr("in", "offsetBlur")
-    feMerge.append("feMergeNode")
-        .attr("in", "SourceGraphic");
-
-
     // Add the canvas for the chart!
     var chartElement = svgElement.append('g')
         .attr('transform', 'translate(' + margins['left'] + ',' + margins['top'] + ')');
@@ -203,8 +172,12 @@ var initGraphic = function(config) {
     }
 
     // Add icons for initial state
-    self.initIcons = function() {
-        iconsGroup.classed('init-hidden', true);
+    self.initIcons = function(showOnInit) {
+        if (showOnInit) {
+            iconsGroup.classed('init-hidden', false);
+        } else {
+            iconsGroup.classed('init-hidden', true);
+        }
         iconsGroup.classed('highlight-visible', false);
         iconsGroup.classed('highlight-2-visible', false);
         iconsGroup.classed('non-invisible', false);
@@ -239,7 +212,7 @@ var initGraphic = function(config) {
                         var imgNum = parseInt(d['img_num'], 10);
                         return '#' + defPrefix + imgNum;
                     })
-                    .style('filter', 'url(#' + defPrefix + 'shadow')
+                    //.style('filter', 'url(#' + defPrefix + 'shadow')
                     .attr('transform', 'scale(' + scaleRatio + ')');
     };
 
@@ -274,7 +247,7 @@ var initGraphic = function(config) {
 
         chartElement.selectAll('.icon-highlight')
             .transition()
-                .duration(1500)
+                .duration(1000)
             .attr('transform', function(d,i) {
                 var xPos = _getXPositionInGrid(highlightedItems, i);
                 var yPos = _getYPositionInGrid(highlightedItems, i);
@@ -285,7 +258,7 @@ var initGraphic = function(config) {
 
         chartElement.selectAll('.icon-non')
             .transition()
-                .duration(1500)
+                .duration(1000)
             .attr('transform', function(d,i) {
                 var xPos = _getXPositionInGrid(nonItems, i, nonOffset);
                 var yPos = _getYPositionInGrid(nonItems, i);
@@ -313,7 +286,7 @@ var initGraphic = function(config) {
 
         chartElement.selectAll('.icon-highlight-2')
             .transition()
-                .duration(1500)
+                .duration(1000)
             .attr('transform', function(d,i) {
                 var xPos = _getXPositionInGrid(highlightedItems, i, subsetOffset);
                 var yPos = _getYPositionInGrid(highlightedItems, i);
@@ -324,7 +297,7 @@ var initGraphic = function(config) {
 
         chartElement.selectAll('.icon-highlight-2-non')
             .transition()
-                .duration(1500)
+                .duration(1000)
             .attr('transform', function(d,i) {
                 var xPos = _getXPositionInGrid(nonItems, i, nonOffset);
                 var yPos = _getYPositionInGrid(nonItems, i);
@@ -340,7 +313,7 @@ var initGraphic = function(config) {
         if (nextArray) {
             nextArray.forEach(function(v,i) {
                 var transitionDelay = 1200;
-                _.delay(self[eventsMap[v]], transitionDelay*i);
+                _.delay(self[eventsMap[v]], transitionDelay*i, true);
             });
         }
     }
