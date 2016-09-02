@@ -74,7 +74,7 @@ html, body {
 }
 
 .slide {
-    // background: #000 url('../assets/background-texture.jpg') repeat;
+    background: #000 url('../assets/background-texture-black.jpg') repeat;
     visibility: hidden;
     position: absolute;
     top: 0;
@@ -86,12 +86,50 @@ html, body {
     text-align: center;
     overflow: auto;
 
-    /*min-height: 0;*/
+    .transition(opacity 0.5s ease-in);
+
+    .animate-text {
+        .transition(transform 1s ease-out);
+    }
+
+    &.deck-previous {
+        opacity: 1;
+        position: fixed;
+        .animate-text  {
+            transform: translate3d(-12px, 0, 0);
+        }
+    }
+
     &.deck-current {
         opacity: 1;
+        position: fixed;
+
+        .animate-text  {
+            transform: translate3d(0, 0, 0);
+        }
     }
-    &.fade, &.fade-in.deck-current {
-        .transition(opacity 1s ease-in);
+
+    &.deck-next {
+        position: fixed;
+        .animate-text  {
+            transform: translate3d(12px, 0, 0);
+        }
+    }
+
+    /*min-height: 0;*/
+    // &.deck-current {
+    //     opacity: 1;
+    // }
+    // &.fade, &.fade-in.deck-current {
+    //     .transition(opacity 1s ease-in);
+    // }
+}
+
+.no-transition.slide {
+    .transition(none);
+
+    .animate-text {
+        .transition(none);
     }
 }
 
@@ -121,7 +159,7 @@ body {
     color: #fff;
     font: 15px/1.4 "Gotham SSm", helvetica, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: #111 url('../assets/background-texture-black.jpg') repeat;
+    background: #111;
 
     @media @screen-small-above { font-size: 24px; }
 }
@@ -330,10 +368,15 @@ p {
 }
 
 //full-bleed background images on sections and slides
-.section,
+// .section,
+// .slide {
+//     .background-size(cover);
+//     background-position: center center;
+// }
+
+
 .slide {
-    .background-size(cover);
-    background-position: center center;
+    overflow: auto;
 }
 
 // full width container within a section or slide
