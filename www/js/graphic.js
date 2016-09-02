@@ -204,6 +204,7 @@ var initGraphic = function(config) {
 
     // Add icons for initial state
     self.initIcons = function() {
+        iconsGroup.classed('init-hidden', true);
         iconsGroup.classed('highlight-visible', false);
         iconsGroup.classed('highlight-2-visible', false);
         iconsGroup.classed('non-invisible', false);
