@@ -10,7 +10,6 @@
 @import "./lib/prefixer";
 @import "./share-modal.less";
 @import "./slides/framed-text.less";
-@import "./slides/full-bleed.less";
 @import "./slides/next-post.less";
 @import "./slides/quote.less";
 @import "./slides/roles.less";
@@ -483,6 +482,24 @@ img {
         @media @screen-small-above {
             width: 80%;
             border: 5px solid #fff;
+        }
+    }
+}
+
+#slide-solutions01,
+#slide-solutions02,
+#slide-solutions03 {
+    .full-block .full-block-cell {
+        vertical-align: top;
+        padding-top: 22px;
+    }
+    img {
+        display: block;
+        margin: 0 auto 20px auto;
+        width: 100%;
+
+        @media @screen-small-above {
+            width: 80%;
         }
     }
 }
