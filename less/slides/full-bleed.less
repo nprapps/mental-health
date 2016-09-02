@@ -4,48 +4,14 @@
 
         > div { position: absolute; }
         .student {
-            width: 45%;
-            top: 50px;
-            left: 33%;
-        }
-        .bubble {
-            // width: 120px;
-            // height: 120px;
-            width: 11%;
-            height: auto;
-            overflow: hidden;
-            overflow: hidden;
-            border-radius: 200px;
-            background-color: @dark-blue;
-            border: 4px solid transparent;
+            width: 90%;
+            top: 5%;
+            left: 5%;
 
-            &.bubble1 {
-                top: 13%;
-                right: 9%;
-            }
-            &.bubble2 {
-                top: 44%;
-                right: 8%;
-            }
-            &.bubble3 {
-                top: 44%;
-                left: 20%;
-            }
-            &.bubble4 {
+            @media @screen-small-above {
+                width: 70%;
                 top: 2%;
-                left: 20%;
-            }
-        }
-        .thought {
-            width: 5%;
-
-            &.thought1 {
-                top: 24%;
-                right: 20%;
-            }
-            &.thought2 {
-                top: 43%;
-                right: 19%;
+                left: 15%;
             }
         }
     }
