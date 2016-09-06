@@ -505,4 +505,89 @@ img {
         text-transform: uppercase;
         margin-bottom: 6px;
     }
+
+    .bubble-illustration { position: relative; }
+
+    .bubble {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+
+        @media @screen-small-above {
+            width: 80%;
+            left: 10%;
+        }
+    }
+}
+#slide-solutions01.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode:forwards;
+    }
+    .teacher { animation-delay: 1s; }
+    .friends { animation-delay: 2s; }
+    .mother { animation-delay: 3s; }
+    .adult { animation-delay: 4s; }
+
+    .nurse { display: none; }
+    .counselor { display: none; }
+    .psych { display: none; }
+    .outside { display: none; }
+}
+
+#slide-solutions02.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult {
+        opacity: 1;
+    }
+
+    .nurse,
+    .counselor,
+    .psych {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode: forwards;
+    }
+    .nurse { animation-delay: 1s; }
+    .counselor { animation-delay: 2s; }
+    .psych { animation-delay: 3s; }
+
+    .outside { display: none; }
+}
+
+#slide-solutions03.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult,
+    .nurse,
+    .counselor,
+    .psych {
+        opacity: 1;
+    }
+
+    .outside {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode: forwards;
+        animation-delay: 1s;
+    }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
