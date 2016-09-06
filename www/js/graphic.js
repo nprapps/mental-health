@@ -107,10 +107,13 @@ var initGraphic = function(config) {
 
         // Check to see if these calculations overflow the vertical viewport
         var containerOffset = $(config['container']).offset().top;
-        var totalY = containerOffset + chartHeight + margins['top'] + margins['bottom'];
-        if (window.innerHeight < totalY) {
+        var parentCell = $(config['container']).parent();
+        var totalY = parentCell.outerHeight();
+        var currentHeight = $(config['container']).find('svg').height() - margins['top'] - margins['bottom'] || chartHeight;
+        var fitHeight = window.innerHeight - (totalY - currentHeight);
+
+        if (chartHeight > fitHeight) {
             // If so, reverse-engineer the calculations to fit the height
-            var fitHeight = window.innerHeight - (totalY - chartHeight);
             chartHeight = fitHeight;
             itemHeight = (fitHeight / (numItems / rowItems)) - itemPadding - itemPadding;
             itemWidth = itemHeight / itemAspect;
