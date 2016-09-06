@@ -48,6 +48,8 @@ var render = function(containerSelector) {
     var initState = graphicElement.attr('data-state');
     var thisGraphic;
 
+    console.log('render containerWidth', containerWidth);
+
     // A debounced update function to redraw the chart on window resize
     var updateLayout = _.debounce(function() {
         containerWidth = parseInt(graphicElement.style('width'));
@@ -115,6 +117,10 @@ var initGraphic = function(config) {
             itemHeight = (fitHeight / (numItems / rowItems)) - itemPadding - itemPadding;
             itemWidth = itemHeight / itemAspect;
             chartWidth = (itemWidth + itemPadding + itemPadding) * rowItems;
+            console.log('containerOffset', containerOffset);
+            console.log('totalY', totalY);
+            console.log('itemWidth', itemWidth);
+            console.log('chartWidth after overflow check', chartWidth, config['container']);
         }
 
         iconWidth = 86; // Not ideal, but this is the pixel width of the SVG icons, for calculating the scale
@@ -159,6 +165,7 @@ var initGraphic = function(config) {
         config['width'] = containerWidth;
         self.calculateLayout();
 
+        console.log('redrawing', config['container'], 'with widths', chartWidth, itemWidth);
         svgElement
             .attr('width', chartWidth + margins['left'] + margins['right'])
             .attr('height', chartHeight + margins['top'] + margins['bottom']);
@@ -167,12 +174,15 @@ var initGraphic = function(config) {
             .attr('transform', 'translate(' + margins['left'] + ',' + margins['top'] + ')');
 
         iconsGroup.html('');
+        debugger;
+        console.log('clear iconsGroup for', config['container']);
 
         self.triggerStates(nextArray);
     }
 
     // Add icons for initial state
     self.initIcons = function(showOnInit) {
+        console.log('initIcons for', config['container'], 'scale ratio:', scaleRatio);
         if (showOnInit) {
             iconsGroup.classed('init-hidden', false);
         } else {
@@ -204,6 +214,7 @@ var initGraphic = function(config) {
                 .attr('transform', function(d,i) {
                     var xPos = _getXPositionInGrid(rowItems, i);
                     var yPos = _getYPositionInGrid(rowItems, i);
+                    console.log('transform icon');
                     return 'translate(' + xPos + ',' + yPos + ')';
                 })
                 .append('use')
@@ -213,7 +224,10 @@ var initGraphic = function(config) {
                         return '#' + defPrefix + imgNum;
                     })
                     //.style('filter', 'url(#' + defPrefix + 'shadow')
-                    .attr('transform', 'scale(' + scaleRatio + ')');
+                    .attr('transform', function() {
+                        console.log('transforming icon use scale');
+                        return 'scale(' + scaleRatio + ')';
+                    });
     };
 
     // Stagger the appearance of icons, giving the effect of tiling them across the screen
