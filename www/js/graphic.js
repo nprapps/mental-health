@@ -16,6 +16,8 @@ var graphicsMap = {
 };
 
 $(document).ready(function() {
+    tweakSizing();
+
     $.each(graphicsMap, function(gId) {
         render(gId);
     });
@@ -38,6 +40,11 @@ $(document).ready(function() {
     });
 });
 
+var tweakSizing = function() {
+    var slideParagraphHeight = $('#slide-01 p').height();
+    $('#slide-02 p').height(slideParagraphHeight);
+};
+
 /*
  * Render initial graphic
  */
@@ -50,6 +57,7 @@ var render = function(containerSelector) {
 
     // A debounced update function to redraw the chart on window resize
     var updateLayout = _.debounce(function() {
+        tweakSizing();
         containerWidth = parseInt(graphicElement.style('width'));
         var nextStateStr = graphicElement.attr('data-next');
         var nextStateArray = nextStateStr ? nextStateStr.split(',') : null;
