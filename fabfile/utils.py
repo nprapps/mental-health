@@ -47,7 +47,7 @@ def install_font(force='true'):
     print 'Installing font'
     if force != 'true':
         try:
-            with open('www/css/icon/npr-app-template.css') and open('www/css/font/npr-app-template.svg'):
+            with open('www/css/icon/lookatthis-font.css') and open('www/css/font/lookatthis-font.svg'):
                 logger.info('Font installed, skipping.')
                 return
         except IOError:

@@ -4,8 +4,8 @@
 * Fonts: To use FontAwesome, uncomment font-awesome, comment out the custom font,
 * and tweak the controlArrow CSS rules later in this file.
 */
-@import "./lib/lookatthis-font.less";
-//@import "./lib/font-awesome/font-awesome";
+@import "../css/icon/lookatthis.css";
+// @import "./lib/font-awesome/font-awesome";
 
 @import "./lib/prefixer";
 @import "./share-modal.less";
@@ -266,18 +266,16 @@ p {
 
         &:before {
             font-family: "lookatthis";
-            content: '\e801';
+            content: '\e800';
             display: block;
         }
 
         /* Uncomment to use FontAwesome */
-        /*
-        &:before {
-            font-family: "FontAwesome";
-            content: '\f104';
-            display: block;
-        }
-        */
+        // &:before {
+        //     font-family: "FontAwesome";
+        //     content: '\f104';
+        //     display: block;
+        // }
 
         @media @screen-small-above {
             margin-left: 10px;
@@ -290,18 +288,16 @@ p {
 
         &:before {
             font-family: "lookatthis";
-            content: "\e800";
+            content: "\e801";
             display: block;
         }
 
         /* Uncomment to use FontAwesome */
-        /*
-        &:before {
-            font-family: "FontAwesome";
-            content: "\f105";
-            display: block;
-        }
-        */
+        // &:before {
+        //     font-family: "FontAwesome";
+        //     content: "\f105";
+        //     display: block;
+        // }
 
         @media @screen-small-above {
             margin-right: 10px;
@@ -449,7 +445,8 @@ img {
 
 #slide-06 {
     .full-block-content {
-        font-size: 24px;
+        font-size: 20px;
+        line-height: 1.3;
 
         @media @screen-small-above { font-size: 32px; }
     }
@@ -460,7 +457,7 @@ img {
 #slide-closing01,
 #slide-closing02 {
     .full-block-content {
-        font-size: 24px;
+        font-size: 20px;
         line-height: 1.3;
 
         @media @screen-tiny-above { font-size: 32px; }
@@ -495,11 +492,102 @@ img {
     }
     img {
         display: block;
-        margin: 0 auto 20px auto;
+        margin: 0 auto 0 auto;
         width: 100%;
 
         @media @screen-small-above {
             width: 80%;
         }
     }
+    strong {
+        display: block;
+        font-size: 75%;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .bubble-illustration { position: relative; }
+
+    .bubble {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+
+        @media @screen-small-above {
+            width: 80%;
+            left: 10%;
+        }
+    }
+}
+#slide-solutions01.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode:forwards;
+    }
+    .teacher { animation-delay: 1s; }
+    .friends { animation-delay: 2s; }
+    .mother { animation-delay: 3s; }
+    .adult { animation-delay: 4s; }
+
+    .nurse { display: none; }
+    .counselor { display: none; }
+    .psych { display: none; }
+    .outside { display: none; }
+}
+
+#slide-solutions02.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult {
+        opacity: 1;
+    }
+
+    .nurse,
+    .counselor,
+    .psych {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode: forwards;
+    }
+    .nurse { animation-delay: 1s; }
+    .counselor { animation-delay: 2s; }
+    .psych { animation-delay: 3s; }
+
+    .outside { display: none; }
+}
+
+#slide-solutions03.deck-current {
+    .teacher,
+    .friends,
+    .mother,
+    .adult,
+    .nurse,
+    .counselor,
+    .psych {
+        opacity: 1;
+    }
+
+    .outside {
+        animation-duration: 1s;
+        animation-name: fadein;
+        animation-fill-mode: forwards;
+        animation-delay: 1s;
+    }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
