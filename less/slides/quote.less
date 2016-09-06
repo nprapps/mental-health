@@ -1,7 +1,9 @@
 .slide.quote {
     text-align: left;
 
-    .full-block-cell { vertical-align: middle; }
+    .full-block-cell {
+        @media @screen-medium-above { vertical-align: middle; }
+    }
 
     .full-block-content {
         max-width: 100%;
