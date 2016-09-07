@@ -33,7 +33,7 @@ mental-health
 What is this?
 -------------
 
-**TKTK: Describe mental-health here.**
+This is the underlying code for the NPR Education visual story "[A Silent Epidemic](http://apps.npr.org/mental-health/)" about treatment of mental health issues in public schools. It borrows heavily from code used in our "[Look at This](https://github.com/nprapps/lookatthis)" stories.
 
 Assumptions
 -----------
