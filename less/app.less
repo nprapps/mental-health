@@ -522,63 +522,41 @@ img {
     }
 }
 #slide-solutions01.deck-current {
-    .teacher,
-    .friends,
-    .mother,
-    .adult {
-        animation-duration: 1s;
-        animation-name: fadein;
-        animation-fill-mode:forwards;
+    .solution01 {
+        .animation-duration(1s);
+        .animation-name(fadein);
+        .animation-fill-mode(forwards);
     }
-    .teacher { animation-delay: 500ms; }
-    .mother { animation-delay: 1500ms; }
-    .friends { animation-delay: 2500ms; }
-    .adult { animation-delay: 3500ms; }
-
-    .nurse { display: none; }
-    .counselor { display: none; }
-    .psych { display: none; }
-    .outside { display: none; }
+    .teacher { .animation-delay(500ms); }
+    .mother { .animation-delay(1500ms); }
+    .friends { .animation-delay(2500ms); }
+    .adult { .animation-delay(3500ms); }
 }
 
 #slide-solutions02.deck-current {
-    .teacher,
-    .friends,
-    .mother,
-    .adult {
-        opacity: 1;
-    }
+    .solution01 { opacity: 1; }
 
-    .nurse,
-    .counselor,
-    .psych {
-        animation-duration: 1s;
-        animation-name: fadein;
-        animation-fill-mode: forwards;
+    .solution02 {
+        .animation-duration(1s);
+        .animation-name(fadein);
+        .animation-fill-mode(forwards);
     }
-    .nurse { animation-delay: 500ms; }
-    .psych { animation-delay: 1500ms; }
-    .counselor { animation-delay: 2500ms; }
-
-    .outside { display: none; }
+    .nurse { .animation-delay(500ms); }
+    .psych { .animation-delay(1500ms); }
+    .counselor { .animation-delay(2500ms); }
 }
 
 #slide-solutions03.deck-current {
-    .teacher,
-    .friends,
-    .mother,
-    .adult,
-    .nurse,
-    .counselor,
-    .psych {
+    .solution01,
+    .solution02 {
         opacity: 1;
     }
 
     .outside {
-        animation-duration: 1s;
-        animation-name: fadein;
-        animation-fill-mode: forwards;
-        animation-delay: 500ms;
+        .animation-duration(1s);
+        .animation-name(fadein);
+        .animation-fill-mode(forwards);
+        .animation-delay(500ms);
     }
 }
 
