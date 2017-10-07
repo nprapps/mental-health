@@ -12,7 +12,7 @@ mental-health
 * [Bootstrap the project](#bootstrap-the-project)
 * [Hide project secrets](#hide-project-secrets)
 * [Save media assets](#save-media-assets)
-* [Add a page to the site](#add-a-page-to-the-site)
+* [Add a page to the site](#adding-a-page-to-the-site)
 * [Run the project](#run-the-project)
 * [COPY configuration](#copy-configuration)
 * [COPY editing](#copy-editing)
