@@ -12,7 +12,7 @@ mental-health
 * [Bootstrap the project](#bootstrap-the-project)
 * [Hide project secrets](#hide-project-secrets)
 * [Save media assets](#save-media-assets)
-* [Add a page to the site](#add-a-page-to-the-site)
+* [Add a page to the site](#adding-a-page-to-the-site)
 * [Run the project](#run-the-project)
 * [COPY configuration](#copy-configuration)
 * [COPY editing](#copy-editing)
@@ -28,7 +28,7 @@ mental-health
 * [Install cron jobs](#install-cron-jobs)
 * [Install web services](#install-web-services)
 * [Run a remote fab command](#run-a-remote-fab-command)
-* [Report analytics](#report-analytics)
+* [Report analytics](#analytics)
 
 What is this?
 -------------
@@ -399,7 +399,7 @@ You can also deploy only configuration files by running (normally this is invoke
 fab servers.deploy_confs
 ```
 
-Run a  remote fab command
+Run a remote fab command
 -------------------------
 
 Sometimes it makes sense to run a fabric command on the server, for instance, when you need to render using a production database. You can do this with the `fabcast` fabric command. For example:
